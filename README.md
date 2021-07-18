@@ -15,6 +15,8 @@
     * A location in path (or add location to the user/system path)
 
 ## Description
-Download videos using youtube-dl through a basic UI 
+Download videos using youtube-dl through a basic UI
+
 This can download either videos and/or audio. Audio is automatically converted to mp3
-Copies to 2 locations, staging dir and an itunes dir. Will add a feature later to disable the second path.
+
+Copies to 2 locations, staging dir and an itunes dir. Will add a feature later to disable the second path
