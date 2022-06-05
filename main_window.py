@@ -23,13 +23,12 @@ class MainWidget(QWidget):
     def __init__(self):
         super().__init__()
 
-        # default locations file
-        self.locations_file = "locations.html"
-
-        self.outputdir_initial = "c:\temp"
-        self.itunesdir = "~\Music\iTunes\iTunes Media\Automatically Add to iTunes"
-        self.historyfile = "history.txt"
-        self.genres_file = "genres.txt"
+        defaults = manage_files.DefaultLocations()
+        dvars = defaults.load_vars()
+        self.outputdir_initial = dvars['outputdir_initial']
+        self.itunesdir = dvars['itunesdir']
+        self.historyfile = dvars['historyfile']
+        self.genres_file = dvars['genres_file']
 
         # text boxes
         self.url_txt = QLineEdit()
@@ -189,6 +188,7 @@ class MainWidget(QWidget):
                     return
                 except yt.utils.DownloadError as e:
                     self.textarea_txt.setText(str(e.exc_info))
+                    return
                 except:
                     e = sys.exc_info()[0]
                     self.textarea_txt.setText(str(e.url))

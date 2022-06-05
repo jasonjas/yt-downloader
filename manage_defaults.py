@@ -8,6 +8,7 @@ from PyQt5.QtWidgets import (QWidget, QGridLayout,
                              QPushButton, QApplication, QLineEdit, QLabel, QTextEdit, QMainWindow, QFileDialog,
                              QCheckBox, QComboBox, QMessageBox)
 
+
 class ManageDefaults:
     def __init__(self, file, defaults_dict):
         self.file = file
@@ -29,7 +30,7 @@ class EditVars(QWidget):
         self.resize(500, 200)
 
         mf = manage_files.DefaultLocations()
-        self.defaults_dict = mf.defaults_dict
+        self.defaults_dict = mf.check_defaults_file()
 
         self.widgets = []
         for key in self.defaults_dict:
@@ -41,22 +42,12 @@ class EditVars(QWidget):
     def save(self):
         # get values
         for i in self.defaults_dict:
-            children = self.findChildren(QLineEdit, QRegExp("his*"))
-            print(children)
-            #child = self.findChild(QLineEdit, i)
-            #i = child.text()
+            child = self.findChild(QLineEdit, f"{i}_text")
+            self.defaults_dict[i] = child.text()
 
-        # mf = manage_files.DefaultLocations()
-        # md = ManageDefaults(mf.file, json)
-        # md.save_file()
-
-    def create_json(self):
         mf = manage_files.DefaultLocations()
-        key = ""
-        value = ""
-
-    # Get local methods
-    local_methods = locals()
+        md = ManageDefaults(file=mf.file, defaults_dict=self.defaults_dict)
+        md.save_file()
 
     def create_ui(self):
         # get form items
