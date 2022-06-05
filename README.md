@@ -1,6 +1,6 @@
 # yt-downloader
 ## Pip package requirements
-* youtube-dl
+* yt-dlp
 * pywin32
 * mutagen
 * PyQt5

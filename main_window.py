@@ -3,7 +3,7 @@ import contextlib, io
 import os
 import shutil
 import file_perms, modifymp3, manage_files
-import youtube_dl as yt
+import yt_dlp as yt
 import sys, re, subprocess
 from PyQt5.QtWidgets import (QWidget, QGridLayout,
                              QPushButton, QApplication, QLineEdit, QLabel, QTextEdit, QMainWindow, QFileDialog,
@@ -194,15 +194,20 @@ class MainWidget(QWidget):
                     self.textarea_txt.setText(str(e.url))
                     return
             # strip out non-standard characters
+            if 'title' not in info_dict:
+                self.textarea_txt.setText("title not in results, stopping")
+                return
             title = info_dict['title']
             char_list = [title[j] for j in range(len(title)) if ord(title[j]) in range(65536)]
             info_dict['title'] = ''
             for c in char_list:
                 info_dict['title'] = info_dict['title'] + c
-            if info_dict['extractor'] == "youtube" and info_dict['alt_title'] is not None:
+
+            if info_dict['extractor'] == "youtube" and 'alt_tile' in info_dict:
                 self.textarea_txt.append(info_dict['title'] + "\n" + info_dict['alt_title'])
                 self.title_txt.setText(info_dict['alt_title'])
             else:
+                self.textarea_txt.append(info_dict['title'])
                 self.title_txt.setText(info_dict['title'])
 
     def getdirectory(self):
