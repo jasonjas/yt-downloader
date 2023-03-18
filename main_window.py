@@ -278,6 +278,7 @@ class MainWidget(QWidget):
 
     def youtube_downloader(self):
         info = self.getinfo()
+        ext = ''
         self.clear_screen()
         outputdir = os.path.join(self.outputdir_txt.text(), '')
         if len(str(info['artist'])) == 0 or len(str(info['url'])) == 0 or len(str(info['title'])) == 0:
@@ -346,7 +347,7 @@ class MainWidget(QWidget):
         self.title_txt.clear()
         pipout = subprocess.run([sys.executable, "-m", "pip", "install", "--upgrade", "pip"], capture_output=True)
         self.textarea_txt.setText(str(pipout) + "\n\n\n")
-        ytout = subprocess.run([sys.executable, "-m", "pip", "install", "--upgrade", "youtube-dl"], capture_output=True)
+        ytout = subprocess.run([sys.executable, "-m", "pip", "install", "--upgrade", "yt-dlp"], capture_output=True)
         self.textarea_txt.append(str(ytout))
 
 
