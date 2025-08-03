@@ -1,6 +1,6 @@
 from mutagen.easyid3 import EasyID3
 import pathlib
-from os import path, rename
+from os import path, replace
 import tkinter as tk
 from tkinter import filedialog
 import re, io
@@ -33,7 +33,7 @@ class Mp3Modify:
     def modify_mp3_file(self, files, info):
         if isinstance(files, str):
             new_f = io.open(files, "r")
-            self.modemp3(new_f, info)
+            new_filename = self.modemp3(new_f, info)
         else:
             for f in files:
                 if isinstance(f, io.IOBase):
@@ -43,7 +43,8 @@ class Mp3Modify:
                     if not f[-4:] == ".mp3":
                         return print(f + " is not an mp3")
                     new_f = io.open(f, "rw")
-                    self.modemp3(new_f, info)
+                    new_filename = self.modemp3(new_f, info)
+        return new_filename
 
     def modemp3(self, mp3file, info):
         file = mp3file.name
@@ -68,7 +69,8 @@ class Mp3Modify:
                 audio.save(v2_version=3)
                 # close open file
                 mp3file.close()
-                rename(file, newpath)
+                replace(file, newpath)
+                return newfilename
             else:
                 print('hyphen (-) not in file name for ' + file)
         else:

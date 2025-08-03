@@ -11,7 +11,7 @@ class DefaultLocations:
         self.file = 'default_locations.txt'
         self.defaults_dict = {
             "outputdir_initial": '.',
-            "itunesdir": '.',
+            "itunesdir": 'null',
             "historyfile": 'history.txt',
             "genres_file": 'genres.txt'
         }
@@ -30,7 +30,7 @@ class DefaultLocations:
             return self.read_file()
 
     def create_file(self):
-        json_encode = json.dumps(self.defaults_dict)
+        json_encode = json.dumps(self.defaults_dict, indent=4)
         with open(self.file, 'w') as fp:
             fp.write(json_encode)
 
@@ -100,3 +100,13 @@ class History:
             with open(self.file, "r") as f:
                 some_lines = list(islice(f, max_num_of_lines))
                 return ''.join(some_lines)
+
+
+class filenames():
+    @staticmethod
+    def replace_invalid_characters(string):
+        # type: (str) -> str
+        invalid = '<>:"/\|?*#'
+        for char in invalid:
+            filename = string.replace(char, '')
+        return filename

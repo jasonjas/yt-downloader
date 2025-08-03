@@ -1,10 +1,12 @@
 #!/usr/bin/python
 import contextlib, io
-import os
+import os, json
+import pathlib
 import shutil
 import file_perms, modifymp3, manage_files
 import yt_dlp as yt
 import sys, re, subprocess
+from typing import Dict
 from PyQt5.QtWidgets import (QWidget, QGridLayout,
                              QPushButton, QApplication, QLineEdit, QLabel, QTextEdit, QMainWindow, QFileDialog,
                              QCheckBox, QComboBox, QMessageBox)
@@ -231,16 +233,27 @@ class MainWidget(QWidget):
         self.populate_genre_dropdown()
         self.url_txt.setFocus()
 
+    def replace_invalid_characters(self, string):
+        # type: (str) -> str
+        invalid = '<>:"/\|?*#'
+        filename = string
+        for char in invalid:
+            if char in string:
+                filename = string.replace(char, '')
+        return filename
+
     def getinfo(self):
+        # type: () -> Dict
         ret = {}
         url = self.url_txt.text().split('&')[0]
         artist = self.artist_txt.text().replace("'", "")
         title = self.title_txt.text().replace("'", "")
         genre = self.genre_btn.itemText(self.genre_btn.currentIndex())
+
         ret['url'] = url
         ret['artist'] = artist
         ret['title'] = title
-        ret['filename'] = artist + "-" + title
+        ret['filename'] = self.replace_invalid_characters(artist + "-" + title)
         ret['genre'] = genre
         return ret
 
@@ -310,10 +323,21 @@ class MainWidget(QWidget):
             try:
                 # info_dict = ydl.extract_info(info['url'], download=False)
                 dl_info = ydl.extract_info(info['url'], download=True)
+                # self.file_location = dl_info['requested_downloads'][0]['filepath']
+
+                # output_filename = os.path.splitext(os.path.basename(dl_info['requested_downloads'][0]['filepath']))
+                output_filename = dl_info['requested_downloads'][0]['filepath']
+                new_path = os.path.join(os.path.split(output_filename)[0],
+                                        info['filename'] + os.path.splitext(output_filename)[1])
+                # rename to new filename
+                os.replace(output_filename, new_path)
+
             except yt.utils.UnsupportedError as e:
                 self.textarea_txt.setText(str(e))
+                return
             except Exception as e:
                 self.textarea_txt.setText(str(e))
+                return
 
         if self.audio_chk_box.isChecked():
             mvoutput = self.make_mp3(ext, outputdir)
@@ -331,14 +355,15 @@ class MainWidget(QWidget):
         info = self.getinfo()
         # modify mp3 properties
         mp3 = modifymp3.Mp3Modify()
-        mp3.modify_mp3_file(info['filename'] + ext, info)
+        sourcefile = mp3.modify_mp3_file(info['filename'] + ext, info)
         fp = file_perms.file_perms()
-        sourcefile = info['title'] + ext
+        # sourcefile = info['filename'] + ext
         filedest = outputdir + sourcefile
-        itunesdest = self.itunesdir + sourcefile
-        cpoutput = shutil.copyfile(sourcefile, itunesdest)
+        if self.itunesdir != "null":
+            itunesdest = self.itunesdir + sourcefile
+            cpoutput = shutil.copyfile(sourcefile, itunesdest)
+            self.textarea_txt.append(cpoutput)
         mvoutput = shutil.move(sourcefile, filedest)
-        self.textarea_txt.append(cpoutput)
         self.textarea_txt.append(mvoutput)
         fp.grantAccessToFile(filedest, "everyone")
         return mvoutput
