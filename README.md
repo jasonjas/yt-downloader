@@ -9,8 +9,9 @@
 ## External package dependencies
 * ffmpeg
   * see the following article on how to get the Windows version
-  * https://stackoverflow.com/a/41822439/6044564
-  * Place the Windows binaries in either of the following
+  * (dead site linked) - https://stackoverflow.com/a/41822439/6044564
+  * See https://github.com/BtbN/FFmpeg-Builds for up-to-date builds
+  * Place the Windows binaries (3) in either of the following
     * \<virtual environment\>/Scripts
     * A location in path (or add location to the user/system path)
 
