@@ -15,8 +15,9 @@
     * A location in path (or add location to the user/system path)
 
 ## Description
-Download videos using youtube-dl through a basic UI
+Download videos using yt-dlp through a basic UI
 
 This can download either videos and/or audio. Audio is automatically converted to mp3
 
-Copies to 2 locations, staging dir and an itunes dir. Will add a feature later to disable the second path
+Copies audio files to 2 locations if `itunesdir` value in the `default_locations.txt` file is set to anything other than null.<br>
+Set the value to `null` (default) to skip copying the file to a second location.

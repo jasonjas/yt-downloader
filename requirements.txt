@@ -1,0 +1,5 @@
+yt-dlp
+pywin32
+mutagen
+PyQt5
+future
