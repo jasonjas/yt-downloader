@@ -27,8 +27,6 @@ class Mp3Modify:
         else:
             self.modify_mp3_file(item_path)
 
-    def rename_file(self, file, newname):
-        rename(file, newname)
 
     def modify_mp3_file(self, files, info):
         if isinstance(files, str):
