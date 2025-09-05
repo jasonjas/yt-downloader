@@ -1,10 +1,15 @@
 #!/usr/bin/python
-import contextlib, io
+import contextlib
+import io
 import os
 import shutil
-import file_perms, modifymp3, manage_files
+import file_perms
+import modifymp3
+import manage_files
 import yt_dlp as yt
-import sys, re, subprocess
+import sys
+import re
+import subprocess
 from typing import Dict
 from PyQt5.QtWidgets import (QWidget, QGridLayout,
                              QPushButton, QApplication, QLineEdit, QLabel, QTextEdit, QMainWindow, QFileDialog,
@@ -118,7 +123,8 @@ class MainWidget(QWidget):
 
         # buttons
         # start at next row (x)
-        positions2 = [(h, k) for h in range(x, x + row_buttons) for k in range(col_buttons)]
+        positions2 = [(h, k) for h in range(x, x + row_buttons)
+                      for k in range(col_buttons)]
         for position2, name2 in zip(positions2, names[count:]):
             if name2 == '':
                 continue
@@ -162,7 +168,8 @@ class MainWidget(QWidget):
         # check if string is a url
         regex = re.compile(
             r'^(?:http|ftp)s?://'  # http:// or https://
-            r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|'  # domain...
+            # domain...
+            r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|'
             r'localhost|'  # localhost...
             r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})'  # ...or ip
             r'(?::\d+)?'  # optional port
@@ -199,13 +206,15 @@ class MainWidget(QWidget):
                 self.textarea_txt.setText("title not in results, stopping")
                 return
             title = info_dict['title']
-            char_list = [title[j] for j in range(len(title)) if ord(title[j]) in range(65536)]
+            char_list = [title[j] for j in range(
+                len(title)) if ord(title[j]) in range(65536)]
             info_dict['title'] = ''
             for c in char_list:
                 info_dict['title'] = info_dict['title'] + c
 
             if info_dict['extractor'] == "youtube" and 'alt_tile' in info_dict:
-                self.textarea_txt.append(info_dict['title'] + "\n" + info_dict['alt_title'])
+                self.textarea_txt.append(
+                    info_dict['title'] + "\n" + info_dict['alt_title'])
                 self.title_txt.setText(info_dict['alt_title'])
             else:
                 self.textarea_txt.append(info_dict['title'])
@@ -274,7 +283,8 @@ class MainWidget(QWidget):
             self.populate_genre_dropdown()
         else:
             msgbox = QMessageBox
-            msgbox.warning(self, "Edit Genre Action", "Action " + action + " is not defined", QMessageBox.Yes)
+            msgbox.warning(self, "Edit Genre Action", "Action " +
+                           action + " is not defined", QMessageBox.Yes)
             msgbox.exec_()
 
     def get_history(self, max_history=0):
@@ -294,7 +304,8 @@ class MainWidget(QWidget):
         self.clear_screen()
         outputdir = os.path.join(self.outputdir_txt.text(), '')
         if len(str(info['artist'])) == 0 or len(str(info['url'])) == 0 or len(str(info['title'])) == 0:
-            self.textarea_txt.setText("URL, artist, and title must be filled out" + "\n")
+            self.textarea_txt.setText(
+                "URL, artist, and title must be filled out" + "\n")
             return
         elif not self.check_url(str(info['url'])):
             return
@@ -369,9 +380,11 @@ class MainWidget(QWidget):
 
     def updateytdl(self):
         self.title_txt.clear()
-        pipout = subprocess.run([sys.executable, "-m", "pip", "install", "--upgrade", "pip"], capture_output=True)
+        pipout = subprocess.run(
+            [sys.executable, "-m", "pip", "install", "--upgrade", "pip"], capture_output=True)
         self.textarea_txt.setText(str(pipout) + "\n\n\n")
-        ytout = subprocess.run([sys.executable, "-m", "pip", "install", "--upgrade", "yt-dlp"], capture_output=True)
+        ytout = subprocess.run(
+            [sys.executable, "-m", "pip", "install", "--upgrade", "yt-dlp"], capture_output=True)
         self.textarea_txt.append(str(ytout))
 
 

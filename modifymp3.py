@@ -3,7 +3,8 @@ import pathlib
 from os import path, replace
 import tkinter as tk
 from tkinter import filedialog
-import re, io
+import re
+import io
 
 
 class Mp3Modify:
@@ -14,7 +15,8 @@ class Mp3Modify:
         # open individual file
         # file_path = filedialog.askopenfilename()
         # open directory
-        file_path = filedialog.askopenfiles(filetypes=(("mp3 files", "*.mp3"), ("all files", "*.*")))
+        file_path = filedialog.askopenfiles(filetypes=(
+            ("mp3 files", "*.mp3"), ("all files", "*.*")))
         root.destroy()
         self.get_files(file_path)
 
@@ -26,7 +28,6 @@ class Mp3Modify:
                 self.modify_mp3_file(mp3file)
         else:
             self.modify_mp3_file(item_path)
-
 
     def modify_mp3_file(self, files, info):
         if isinstance(files, str):
@@ -54,7 +55,8 @@ class Mp3Modify:
                 artist = info['artist']
                 # artist = path.basename(file).rsplit('-', 1)[0]
                 dirpath = pathlib.Path(file).parent
-                newfilename = re.sub('^' + artist + '-', '', path.basename(file))
+                newfilename = re.sub('^' + artist + '-',
+                                     '', path.basename(file))
                 newpath = str(dirpath) + '\\' + newfilename
                 title = str(path.splitext(newfilename)[0])
                 audio = EasyID3(file)
