@@ -2,7 +2,6 @@ from datetime import datetime
 from itertools import islice
 from pathlib import Path
 import json
-import main_window
 
 
 class DefaultLocations:

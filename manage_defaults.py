@@ -1,4 +1,4 @@
-import json, sys, inspect
+import json, sys
 
 from PyQt5.QtCore import QRegExp
 

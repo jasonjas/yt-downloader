@@ -1,7 +1,6 @@
 #!/usr/bin/python
 import contextlib, io
-import os, json
-import pathlib
+import os
 import shutil
 import file_perms, modifymp3, manage_files
 import yt_dlp as yt
