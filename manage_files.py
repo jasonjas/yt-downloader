@@ -105,7 +105,7 @@ class filenames():
     @staticmethod
     def replace_invalid_characters(string):
         # type: (str) -> str
-        invalid = '<>:"/\|?*#'
+        invalid = '<>:"/\\|?*#'
         for char in invalid:
             filename = string.replace(char, '')
         return filename

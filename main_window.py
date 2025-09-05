@@ -243,7 +243,7 @@ class MainWidget(QWidget):
 
     def replace_invalid_characters(self, string):
         # type: (str) -> str
-        invalid = '<>:"/\|?*#'
+        invalid = '<>:"/\\|?*#'
         filename = string
         for char in invalid:
             if char in string:
