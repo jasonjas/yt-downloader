@@ -2,7 +2,6 @@ from datetime import datetime
 from itertools import islice
 from pathlib import Path
 import json
-import main_window
 
 
 class DefaultLocations:
@@ -106,7 +105,7 @@ class filenames():
     @staticmethod
     def replace_invalid_characters(string):
         # type: (str) -> str
-        invalid = '<>:"/\|?*#'
+        invalid = '<>:"/\\|?*#'
         for char in invalid:
             filename = string.replace(char, '')
         return filename

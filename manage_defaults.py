@@ -1,8 +1,10 @@
-import json, sys, inspect
+import json
+import sys
 
 from PyQt5.QtCore import QRegExp
 
-import manage_files, main_window
+import manage_files
+import main_window
 from collections import Counter
 from PyQt5.QtWidgets import (QWidget, QGridLayout,
                              QPushButton, QApplication, QLineEdit, QLabel, QTextEdit, QMainWindow, QFileDialog,
@@ -64,14 +66,16 @@ class EditVars(QWidget):
         max_col_size = 2
         max_rows = int(len(self.widgets) + len(buttons) / max_col_size)
 
-        positions = [(i, j) for i in range(max_rows) for j in range(max_col_size)]
+        positions = [(i, j) for i in range(max_rows)
+                     for j in range(max_col_size)]
         for position, name in zip(positions, self.widgets):
             if name == '':
                 continue
             grid.addWidget(name, *position, 1, max_col_size)
             x_axis = position[0] + 1
 
-        positions2 = [(h, k) for h in range(x_axis, x_axis + (max_rows - x_axis)) for k in range(max_col_size)]
+        positions2 = [(h, k) for h in range(x_axis, x_axis +
+                                            (max_rows - x_axis)) for k in range(max_col_size)]
         for position2, name2 in zip(positions2, buttons[count:]):
             if name2 == '':
                 continue
