@@ -283,7 +283,7 @@ class MainWidget(tk.Tk):
         if self.audio_chk_box_var.get() == 1:
             ext = ".mp3"
             ydl_opts = {
-                'format': 'bestaudio/best',
+                'format': 'bestaudio',
                 'outtmpl': outtmpl,
                 'youtube_include_dash_manifest': False,
                 'postprocessors': [
