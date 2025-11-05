@@ -313,7 +313,7 @@ class MainWidget(QWidget):
         if self.audio_chk_box.isChecked():
             ext = ".mp3"
             ydl_opts = {
-                'format': 'bestaudio/best',
+                'format': 'bestaudio',
                 'outtmpl': outtmpl,
                 'youtube_include_dash_manifest': False,
                 'postprocessors': [
