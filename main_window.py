@@ -7,6 +7,7 @@ import file_perms
 import modifymp3
 import manage_files
 import yt_dlp as yt
+from yt_dlp.utils import download_range_func
 import sys
 import re
 import subprocess
@@ -42,6 +43,8 @@ class MainWidget(QWidget):
         self.title_txt = QLineEdit()
         self.outputdir_txt = QLineEdit()
         self.textarea_txt = QTextEdit()
+        self.start_time_txt = QLineEdit()
+        self.end_time_txt = QLineEdit()
         # buttons
         self.selectdir_btn = QPushButton('select directory')
         self.listformats_btn = QPushButton('list formats')
@@ -56,6 +59,7 @@ class MainWidget(QWidget):
         self.download_btn = QPushButton('download')
         self.allhistory_btn = QPushButton('all history')
         self.somehistory_btn = QPushButton('history(5)')
+        self.help_btn = QPushButton('Help')
 
         # drop-down
         self.genre_btn = QComboBox()
@@ -78,6 +82,7 @@ class MainWidget(QWidget):
         self.savegenres_btn.clicked.connect(lambda: self.edit_genre("save"))
         self.allhistory_btn.clicked.connect(lambda: self.get_history())
         self.somehistory_btn.clicked.connect(lambda: self.get_history(5))
+        self.help_btn.clicked.connect(lambda: self.help_text())
 
         # self.editgenres_btn.clicked.connect(lambda: self.test_history())
         self.listformats_btn.clicked.connect(lambda: self.getformats())
@@ -96,19 +101,22 @@ class MainWidget(QWidget):
         artist_label = QLabel('Artist')
         title_label = QLabel('Title')
         outputdir_label = QLabel('Output Dir')
+        start_time_label = QLabel('Start Time')
+        end_time_label = QLabel('End Time')
 
         names = [url_label, self.url_txt, artist_label, self.artist_txt,
                  title_label, self.title_txt, outputdir_label, self.outputdir_txt,
                  self.selectdir_btn, self.listformats_btn, self.gettitle_btn, self.getmetadata_btn,
                  self.updateyoutube_btn,
                  self.editgenres_btn, self.savegenres_btn, self.allhistory_btn, self.audio_chk_box, self.genre_btn,
-                 self.close_btn, self.clearlog_btn, self.somehistory_btn, self.reset_btn, self.download_btn]
+                 self.close_btn, self.clearlog_btn, self.somehistory_btn, self.reset_btn, self.download_btn, 
+                 start_time_label, self.start_time_txt, end_time_label, self.end_time_txt, self.help_btn]
 
         # set row, col, and count vars
         x = 0
         count = 0
         col_buttons = 5
-        row_buttons = 3
+        row_buttons = 4
         col_text = 2
         row_text = 4
 
@@ -138,6 +146,14 @@ class MainWidget(QWidget):
         self.setWindowTitle('Youtube Download')
         self.reset()
         # self.show()
+
+    def help_text(self):
+        """
+        Display help text in the textarea box
+        """
+        with open('help.txt', 'r') as ht:
+            help_text = ht.read()
+        self.textarea_txt.setText(help_text)
 
     def getformats(self):
         info = self.getinfo()
@@ -238,6 +254,7 @@ class MainWidget(QWidget):
         self.url_txt.clear()
         self.artist_txt.clear()
         self.title_txt.clear()
+        self.set_start_end_time()
         self.populate_genre_dropdown()
         self.url_txt.setFocus()
 
@@ -264,6 +281,34 @@ class MainWidget(QWidget):
         ret['filename'] = self.replace_invalid_characters(artist + "-" + title)
         ret['genre'] = genre
         return ret
+    
+    def set_start_end_time(self):
+        # type: () -> None
+        self.start_time_txt.setText('0:00')
+        self.end_time_txt.setText('inf')
+
+    def get_sec(self, time_str):
+        # type: (str) -> int
+        """Get seconds from time string like 1:30
+        https://stackoverflow.com/a/6402934
+        """
+        secs = sum(int(x) * 60 ** i for i, x in enumerate(reversed(time_str.split(':'))))
+        return secs
+
+    def get_start_end_time(self, start_or_end):
+        # type: (str) -> str
+        if start_or_end == 'start':
+            default_value = "0"
+            time_data = self.start_time_txt.text()
+        if start_or_end == 'end':
+            default_value = "inf"
+            time_data = self.end_time_txt.text()
+        try:
+            time_data = self.get_sec(time_data)
+        except:
+            # return default value if error getting seconds
+            time_data = default_value
+        return time_data
 
     def populate_genre_dropdown(self):
         # genre dropdown
@@ -322,6 +367,8 @@ class MainWidget(QWidget):
                      },
                     {'key': 'FFmpegMetadata'},
                 ],
+                'download_ranges': download_range_func(None, [(self.get_start_end_time('start'), self.get_start_end_time('end'))]),
+                'force_keyframes_at_cuts': True
             }
         else:
             ydl_opts = {

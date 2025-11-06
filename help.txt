@@ -1,0 +1,25 @@
+HELP Doc
+-------------------
+Function/Button ..........Description
+
+Select directory..........The location to save the downloaded file to.
+list formats..........List video formats available.
+get title..........Print out the video's title.
+get metadata..........Returns the metadata of the video in the textarea.
+update YT..........Updates yt-dlp python package, run periodically.
+list genres..........List genres file, puts in textarea and allows for adding/removing text.
+save genres..........Saves what is in the textarea as the genres.
+all history..........Lists the history file.
+audio only..........Download only the audio, not the video.
+genre (drop-down)..........The genre to assign to an audio file, not used if video is downloaded.
+close...............Close the current window.
+clear log..........Clear the textarea contents.
+history(5)..........Shows the last 5 entries in the textarea.
+reset...............Clear/reset all text boxes.
+download...........Download the audio/video.
+Help...............Show this text.
+
+Start time..........Number of seconds or time (ex. 1:15) the video/audio should start at
+End time..........Number of seconds or time (ex. 1:15) the video/audio should end
+*** NOTE: The start/end times are performed by ffmpeg, not all times can be exact or even be cut based on frames
+    https://stackoverflow.com/questions/73921240/yt-dlp-download-range-not-working-for-youtube-links
