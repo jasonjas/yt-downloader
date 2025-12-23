@@ -292,7 +292,10 @@ class MainWidget(QWidget):
         """Get seconds from time string like 1:30
         https://stackoverflow.com/a/6402934
         """
-        secs = sum(int(x) * 60 ** i for i, x in enumerate(reversed(time_str.split(':'))))
+        if time_str == 'inf':
+            secs = float(time_str)
+        else:
+            secs = sum(int(x) * 60 ** i for i, x in enumerate(reversed(time_str.split(':'))))
         return secs
 
     def get_start_end_time(self, start_or_end):
