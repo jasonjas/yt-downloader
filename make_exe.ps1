@@ -1,0 +1,2 @@
+.\venv\Scripts\activate
+pyinstaller -d imports -F --paths=. --hidden-import=manage_files --hidden-import=main_window --hidden-import=modifymp3 --hidden-import=file_perms --hidden-import=manage_defaults --hidden-import=tasks main.py
