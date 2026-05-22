@@ -370,9 +370,17 @@ class MainWidget(QWidget):
                      },
                     {'key': 'FFmpegMetadata'},
                 ],
-                'download_ranges': download_range_func(None, [(self.get_start_end_time('start'), self.get_start_end_time('end'))]),
+                # 'download_ranges': download_range_func(None, [(self.get_start_end_time('start'), self.get_start_end_time('end'))]),
                 'force_keyframes_at_cuts': True
             }
+            # if no time altered, do not set download range
+            start_time = self.get_start_end_time('start')
+            end_time = self.get_start_end_time('end')
+            print(type(start_time))
+            print(type(end_time))
+            if start_time != 0 or end_time != float('inf'):
+                download_range = {'download_ranges': download_range_func(None, [(start_time, end_time)])}
+                ydl_opts.update(download_range)
         else:
             ydl_opts = {
                 # 'format': 'bestvideo',
