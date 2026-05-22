@@ -1,10 +1,11 @@
 # yt-downloader
 ## Pip package requirements
-* yt-dlp
+* yt-dlp[default]
 * pywin32
 * mutagen
 * PyQt5
 * future
+* deno
 
 ## External package dependencies
 * ffmpeg

@@ -1,5 +1,6 @@
-yt-dlp
+yt-dlp[default]
 pywin32
 mutagen
 PyQt5
 future
+deno
