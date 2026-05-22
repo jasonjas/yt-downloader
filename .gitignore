@@ -4,3 +4,7 @@
 /venv
 /default_locations.txt
 /__*
+build
+dist
+main.exe
+main.spec
